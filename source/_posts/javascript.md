@@ -193,16 +193,27 @@ console.log(undefined == null)//true
 八进制在严格模式下无效
 
 1. 浮点值
-
-​	因为存储浮点值使用的内存空间是存储整数值的两倍，所以 ECMAScript 总是想方设法把值转换为 整数。在小	数点后面没有数字的情况下，数值就会变成整数。类似地，如果数值本身就是整数，只是小 数点后面跟着 0		（如 1.0），那它也会被转换为整数。
+​	因为存储浮点值使用的内存空间是存储整数值的两倍，所以 ECMAScript 总是想方设法把值转换为 整数。在小数点后面没有数字的情况下，数值就会变成整数。类似地，如果数值本身就是整数，只是小 数点后面跟着 0（如 1.0），那它也会被转换为整数。
 
 ​	**科学计数法**：表示一个应该乘以 10 的给定次幂的数值。eg：3.15e5 = 315000 3.15e-5 = 0.0000315
 
 2. 值的范围
-
    ECMAScript 可以表示的最小 数值保存在** Number.MIN_VALUE** 中，这个值在多数浏览器中是 5e-324；可以表示的最大数值保存在 Number.MAX_VALUE 中，这个值在多数浏览器中是 1.797 693 134 862 315 7e+308。如果某个计算得到的 数值结果超出了 JavaScript 可以表示的范围，那么这个数值会被自动转换为一个特殊的 Infinity（无 穷）值。任何无法表示的负数以-Infinity（负无穷大）表示，任何无法表示的正数以 Infinity（正 无穷大）表示。
 
-3. NaN
+3. NaN:not a number
+   
+```javascript
+console.log(0/0); // NaN 
+console.log(-0/+0); // NaN 
+console.log(NaN === NaN) // false
+console.log(isNaN(NaN)); // true 
+console.log(isNaN(10)); // false，10 是数值
+console.log(isNaN("10")); // false，可以转换为数值 10 
+console.log(isNaN("blue")); // true，不可以转换为数值
+console.log(isNaN(true)); // false，可以转换为数值 1
+```
+   + 涉及NaN的操作返回都NaN
+   + NaN不等于包括NaN在内的任何值
 
 4. 
 
