@@ -217,6 +217,67 @@ console.log(isNaN(true)); // false，可以转换为数值 1
 
 4. 
 
+## 第四章 变量、作用域与内存
+### 4.1 原始值与引用值
+
+### 4.2 执行上下文与作用域
+1. 引用值的赋值实际上是指针的赋值，都是指向堆内存的同一对象
+2. ECMAScript 中所有函数的参数都是按值传递的。
+3. typeof是用来判断一个变量是否为原始类型的最好方法
+4. 引用类型用 instanceof操作符来区分（variable instanceof constructor）
+5. 当代码执行流进入函数时，函数的上下文被推到一个上下文栈上。
+   在函数执行完之后，上下文栈会弹出该函数上下文，将控制权返还给之前的执行上下文。ECMAScript
+   程序的执行流就是通过这个上下文栈进行控制的
+6. **作用域链增强**
+   + 作用域链增强：对 catch 语句而言，则会创建一个新的变量对象，这个变量对象会包含要抛出的错误对象的声明
+   +  with 语句： 对 with 语句来说，会向作用域链前端添加指定的对象
+### 4.3 垃圾回收
+1. 垃圾回收程序每隔一定时间（或者说在代码执行过程中某个预定的收集时间）就会自动运行
+2. 标记清理：
+3. 解除引用
+```javascript
+function createPerson(name){ 
+ let localPerson = new Object(); 
+ localPerson.name = name; 
+ return localPerson; 
+} 
+let globalPerson = createPerson("Nicholas"); 
+// 解除 globalPerson 对值的引用
+globalPerson = null; 
+```
+解除对一个值的引用并不会自动导致相关内存被回收。解除引用的关键在于确保相关
+的值已经不在上下文里了，因此它在下次垃圾回收时会被回收
+4. 内存管理（垃圾回收的优化）
++ 使用const let声明变量
++ 隐藏类和删除操作：
+   避免先创建后补充的动态属性赋值，在动态函数中实现一次性声明所有属性；
+   最佳实践是把不想要的属性设置为 null。这样可以保持隐藏类不变和继续共享，同时也能达到删除引用值供垃圾回收程序回收的效果。
+```javascript
+function Article(opt_author) { 
+ this.title = 'Inauguration Ceremony Features Kazoo Band'; 
+ this.author = opt_author; 
+} 
+let a1 = new Article(); 
+let a2 = new Article('Jake'); 
+function Article() { 
+ this.title = 'Inauguration Ceremony Features Kazoo Band'; 
+ this.author = 'Jake'; 
+} 
+let a1 = new Article(); 
+let a2 = new Article(); 
+delete a1.author; // 会导致使用两个隐藏类
+```
++ 闭包容易造成内存泄漏
++ 静态分配与对象池
+
+## 5. 基本引用类型
+### 5.1 Date
+   Date.parse()
+   + “月/日/年”，如"5/23/2019"；
+   + “月名 日, 年”，如"May 23, 2019"；
+   + “周几 月名 日 年 时:分:秒 时区”，如"Tue May 23 2019 00:00:00 GMT-0700"；
+   + ISO 8601 扩展格式“YYYY-MM-DDTHH:mm:ss.sssZ”，如 2019-05-23T00:00:00（只适用于兼容 ES5 的实现）。
+### 5.2 RegExp
 
 
 
