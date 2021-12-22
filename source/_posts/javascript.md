@@ -278,11 +278,61 @@ delete a1.author; // 会导致使用两个隐藏类
    + “周几 月名 日 年 时:分:秒 时区”，如"Tue May 23 2019 00:00:00 GMT-0700"；
    + ISO 8601 扩展格式“YYYY-MM-DDTHH:mm:ss.sssZ”，如 2019-05-23T00:00:00（只适用于兼容 ES5 的实现）。
 ### 5.2 RegExp
+   包含两个实例方法
+   + exec() ：包含两个额外的属性：index 和 input。index 是字符串中匹配模式的起始位置，input 是要查找的字符串。
+   + test() :返回是否匹配（true or false）
 
+   属性
+   ```javascript
+   let text = "this has been a short summer"; 
+   let pattern = /(.)hort/g; 
+   if (pattern.test(text)) { 
+   // 原始字符串
+   console.log(RegExp.input); // this has been a short summer 
+   // 匹配的字符的左边
+   console.log(RegExp.leftContext); // this has been a 
+   // 匹配的字符的右边
+   console.log(RegExp.rightContext); // summer 
+   // 属性包含匹配整个正则表达式的上一个字符串
+   console.log(RegExp.lastMatch); // short 
+   // 属性包含捕获组的上一次匹配
+   console.log(RegExp.lastParen); // s 
+   } 
+   ```
+### 5.3 原始值包装类型
 
+   ```javascript
+   let s1 = "some text"; 
+   let s2 = s1.substring(2);
 
+   // 1.创建一个String类型实例
+   // 2.调用实例上的特定方法
+   // 3. 销毁实例
 
+   let s1 = new String("some text"); 
+   let s2 = s1.substring(2); 
+   s1 = null; 
+   ```
+#### 5.3.1 Boolean
+   **所有对象在布尔表达式中都会自动转换为 true**
+   ```javascript
+   // 原始Boolean值
+   let booleanValue = false
+   // Boolean对象(不要用)
+   let booleanObj = new Boolean(false) 
+   ```
+#### 5.3.2 Number
+#### 5.3.3 String
+   + 操作字符串：concat, slice, substr, substring都不会改变原字符串
+   + 检索字符串位置：indexOf():正序搜索；lastIndexOf():倒序搜索；第二个参数是搜索的位置（不包括该位置）
+   + 字符串包含方法：startsWith(),endsWith(), includes()
+   + padStart()和 padEnd()方法会复制字符串，如果小于指定长度，则在相应一边填充字符，直至满足长度条件。这两个方法的第一个参数是长度，第二个参数是可选的填充字符串，默认为空格。
+   + 字符串的匹配模式：match(), search()
+### 5.4 单例内置对象
+   定义：任何由 ECMAScript 实现提供、与宿主环境无关，并在 ECMAScript程序开始执行时就存在的对象
 
+#### 5.4.1 Global
+   + url编码：
 
 
 
