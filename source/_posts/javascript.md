@@ -333,8 +333,30 @@ delete a1.author; // 会导致使用两个隐藏类
 
 #### 5.4.1 Global
    + url编码：
-
-
+   + eval():通过 eval()定义的任何变量和函数都不会被提升，这是因为在解析代码的时候，它们是被包含在一个字符串中的。它们只是在 eval()执行的时候才会被创建;在严格模式下，在 eval()内部创建的变量和函数无法被外部访问,赋值给 eval 也会导致错误
+#### 5.4.2 Math
+   + Math 计算的问题是精度会因浏览器、操作系统、指令集和硬件而异
+   + Math.random()随机返回一个0到1的16位小数，需要用Math.floor()处理
+   ```javascript
+   // 返回lowerValue~upperValue之间的数
+   function selectFrom(lowerValue, upperValue) { 
+   let choices = upperValue - lowerValue + 1; 
+   return Math.floor(Math.random() * choices + lowerValue); 
+   }
+   // 返回一个1~10的整数
+   let res = Math.floor(Math.random()*10 +1)
+   ```
+## 6 集合引用类型
+### 6.1 Object
++ 创建显式对象的方法：
+   ```javascript
+   // 使用 new 操作符和 Object 构造函数
+   const obj1 = new Object()
+   // 对象字面量
+   const obj2 = {}
+   ```
+### 6.2 Array
++ from()用于将**类数组结构(即任何可迭代的结构,或者有一个 length 属性和可索引元素的结构)**转换为数组实例，而 of()用于将一组参数转换为数组实例
 
 
 
