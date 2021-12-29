@@ -357,6 +357,30 @@ delete a1.author; // 会导致使用两个隐藏类
    ```
 ### 6.2 Array
 + from()用于将**类数组结构(即任何可迭代的结构,或者有一个 length 属性和可索引元素的结构)**转换为数组实例，而 of()用于将一组参数转换为数组实例
++ 一些数组方法（改变原数组的）: unshift,shift,pop,push,splice,fill,reverse, sort, copyWithin
+```javascript
+let arr = ['red', 'yellow', 'blue', 'pink']
+// 删除
+let removed = arr.splice(0,1) //(要删除的位置，要删除的数量)
+console.log(arr) // [ 'yellow', 'blue', 'pink']
+console.log(removed) // ['red']
+// 添加
+let add = arr.splice(1,0,'red') // (要插入的位置，删除元素的数量，添加的元素)
+console.log(arr) // [ 'yellow', 'red', 'blue', 'pink']
+console.log(add) //[]
+
+// 替换
+let replace = arr.splice(1,1,'orange') // (要替换的位置，删除的元素个数，替换的元素)
+console.log(arr) // [ 'yellow', 'orange', 'blue', 'pink']
+console.log(replace) // ['red']
+```
++ 遍历数组的方法：map（返回调用结果组成的数组），forEach没有返回，some和every返回true or flase，filter（函数返回 true 的项会组成数组之后返回）
++ 归并方法：reduce(), reduceRight(),接收四个参数：上一个归并值，当前值，当前值索引，数组本身。
+```javascript
+let values = [1, 2, 3, 4, 5]; 
+let sum = values.reduce((prev, cur, index, array) => prev + cur); 
+alert(sum); // 15
+```
 
 
 
