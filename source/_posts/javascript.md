@@ -249,7 +249,7 @@ globalPerson = null;
 的值已经不在上下文里了，因此它在下次垃圾回收时会被回收
 4. 内存管理（垃圾回收的优化）
 + 使用const let声明变量
-+ 隐藏类和删除操作：
++ 隐藏类和删除操作！important：
    避免先创建后补充的动态属性赋值，在动态函数中实现一次性声明所有属性；
    最佳实践是把不想要的属性设置为 null。这样可以保持隐藏类不变和继续共享，同时也能达到删除引用值供垃圾回收程序回收的效果。
 ```javascript
@@ -381,6 +381,111 @@ let values = [1, 2, 3, 4, 5];
 let sum = values.reduce((prev, cur, index, array) => prev + cur); 
 alert(sum); // 15
 ```
+### 6.3 Map
+1. 键值可以是任何类型，Map 实例会维护键值对的插入顺序，因此可以根据插入顺序执行迭代操作。
+2. 与object的比较
++ 内存：相同内存下，map比object多存储50%
++ 插入： map性能更好
++ 查找：大量查找操作下，object更好
++ 删除： map更好，delete操作对性能来说不友好
+
+### 6.4 WeakMap[!important]
+WeakMap 是 Map 的“兄弟”类型，其 API 也是 Map 的子集。WeakMap 中的“weak”（弱），
+描述的是 JavaScript 垃圾回收程序对待“弱映射”中键的方式。
+1. 构造方法
+```javascript
+const wm = new WeakMAp()
+// 键值只能是Object或者继承自Object的类型
+const key1 = {id: 1}
+const key2 = {id: 2}
+
+const wm1 = new WeakMap([ 
+ [key1, "val1"], 
+ [key2, "val2"], 
+]);
+```
+2. 弱键
+WeakMap 中“weak”表示弱映射的键是“弱弱地拿着”的。意思就是，这些键不属于正式的引用，不会阻止垃圾回收。但要注意的是，弱映射中值的引用可不是“弱弱地拿着”的。只要键存在，键/值对就会存在于映射中，并被当作对值的引用，因此就不会被当作垃圾回收。
+3. 不可迭代键
+因为 WeakMap 中的键/值对任何时候都可能被销毁，所以没必要提供迭代其键/值对的能力。当然，
+也用不着像 clear()这样一次性销毁所有键/值的方法。
+4. 使用弱映射
+
+### 6.4 Set
+加强的map
+
+1. 基本api
++ 如果想在创建时初始化实例，则可以给Set构造函数传入一个可迭代对象
+```javascript
+const s1 = new Set(['val1, "val2", "val3"])
+s1.size //3
+s1.add('val4') // 增加值， 返回集合的实例
+s1.has('val1') // 查询
+s1.delete('val1') // 删除
+s1.clear() // 销毁实例中所有的值
+```
+2. 顺序和迭代
+Set会维护插入时的顺序，支持按顺序迭代
+
+3. Set与Map相比
+
+### 6.5 WeakSet
+
+### 6.6 迭代与扩展操作
+定性数组（？）
+
+## 7.迭代器和生成器(不太懂)
+ES6新增两个高级特性：迭代器和生成器
+### 7.1 理解迭代
+1. 循环执行迭代缺点
++ 迭代之前需要实现知道如何使用数据结构
++ 遍历顺序并不是数据结构固有的
+
+### 7.2 迭代器模式
+迭代器模式（特别是在 ECMAScript 这个语境下）描述了一个方案，即可以把有些结构称为“可迭代对象”（iterable），因为它们实现了正式的 Iterable 接口，而且可以通过迭代器 Iterator 消费。
+可迭代对象是一种抽象的说法。基本上，可以把可迭代对象理解成数组或集合这样的集合类型的对象。它们包含的元素都是有限的，而且都具有无歧义的遍历顺序。
+
+## 8.对象、类与面向对象编程
+
+### 8.1 理解对象
+1. 对象属性分为： 数据属性和访问器属性
++ 数据属性： Configurable， Enumerable， Writable， Value
++ 访问器属性： Configurable，Enumerable，Get，Set
++ 设置和访问： Object.defineProperty() ，Object.getOwnPropertyDescriptor()
+
+```javascript
+let book = {}; 
+Object.defineProperties(book, { 
+   year_: { 
+      value: 2017 
+   }, 
+   edition: { 
+      value: 1 
+   }, 
+   year: { 
+   get: function() { 
+      return this.year_; 
+   }, 
+   set: function(newValue){ 
+      if (newValue > 2017) { 
+      this.year_ = newValue; 
+      this.edition += newValue - 2017; 
+   } 
+ } 
+ } 
+}); 
+let descriptor = Object.getOwnPropertyDescriptor(book, "year_"); 
+console.log(descriptor.value); // 2017 
+console.log(descriptor.configurable); // false 
+console.log(typeof descriptor.get); // "undefined" 
+let descriptor = Object.getOwnPropertyDescriptor(book, "year"); 
+console.log(descriptor.value); // undefined 
+console.log(descriptor.enumerable); // false 
+console.log(typeof descriptor.get); // "function" 
+
+```
+
+
 
 
 
