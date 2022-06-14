@@ -448,12 +448,35 @@ ES6新增两个高级特性：迭代器和生成器
 ## 8.对象、类与面向对象编程
 
 ### 8.1 理解对象
+#### 8.1.1 属性的类型
 1. 对象属性分为： 数据属性和访问器属性
 + 数据属性： Configurable， Enumerable， Writable， Value
 + 访问器属性： Configurable，Enumerable，Get，Set
 + 设置和访问： Object.defineProperty() ，Object.getOwnPropertyDescriptor()
-
+   - Configurable：是否可以删除并重新定义
+   - Enumerable：是否可以通过 for-in 循环返回
+   - Writable: 是否可以修改
+#### 8.1.2 定义多个属性
+Object.defineProperties()方法。这个方法可以通过多个描述符一次性定义多个属性。它接收两个参数：要为之添加或修改属性的对象和另一个描述符对象，其属性与要添加或修改的属性一一对应
+#### 8.1.3 读取属性的特性
++ 使用 Object.getOwnPropertyDescriptor()方法可以取得指定属性的属性描述符。这个方法接
+收两个参数：属性所在的对象和要取得其描述符的属性名。返回值是一个对象，对于访问器属性包含
+configurable、enumerable、get 和 set 属性，对于数据属性包含 configurable、enumerable、
+writable 和 value 属性。
+ + getOwnPropertyDescriptors：会在每个自有属性上调用 Object.getOwnPropertyDescriptor()并在一个新对象中返回它们
 ```javascript
+// 数据属性
+let person = {}; 
+Object.defineProperty(person, "name", { 
+ writable: false, 
+ configurable: false, 
+ value: "Nicholas" 
+}); 
+// 在非严格模式下删除name会忽略，严格模式下会报错
+console.log(person.name); // "Nicholas" 
+person.name = "Greg"; 
+console.log(person.name); // "Nicholas"
+// 访问器
 let book = {}; 
 Object.defineProperties(book, { 
    year_: { 
@@ -482,6 +505,44 @@ let descriptor = Object.getOwnPropertyDescriptor(book, "year");
 console.log(descriptor.value); // undefined 
 console.log(descriptor.enumerable); // false 
 console.log(typeof descriptor.get); // "function" 
+
+```
+#### 8.1.4 合并对象
+Object.assign()：浅复制，对象的引用；接收严格目标对象和一个或多个源对象作为参数，将源对象中可枚举的属性复制到目标对象；如果多个源对象有相同的属性，则用最后一个复制的值。
+#### 8.1.5 对象标识及相等判定
+Object.is()
+```javascript
+console.log(-0 === +0) // true
+console.log(-0 === 0) // true
+console.log(+0 === 0) // true
+
+console.log(Object.is(+0, -0)); // false 
+console.log(Object.is(+0, 0)); // true 
+console.log(Object.is(-0, 0)); // false 
+
+console.log(Object.is(NaN, NaN)); // true 
+
+```
+#### 8.1.6 增强的对象语法
+ES6新增的语法糖:
+1. 属性值简写
+```javascript
+let name = 'Matt'; 
+let person = { 
+ name: name 
+}; 
+//=======>
+let person = { 
+ name 
+};
+console.log(person); // { name: 'Matt' }
+
+```
+2. 可计算属性
+
+3. 简写方法名
+
+```javascript
 
 ```
 
