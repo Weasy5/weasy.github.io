@@ -545,6 +545,140 @@ console.log(person); // { name: 'Matt' }
 ```javascript
 
 ```
+#### 8.1.7 对象解构
++ null和 undefined 不能被解构，否则会抛出错误
++ 解构并不要求变量必须在解构表达式中声明。不过，如果是给事先声明的变量赋值，则赋值表达式必须包含在一对括号中
+```javascript
+let person = { 
+ name: 'Matt', 
+ age: 27 
+};
+// 不使用对象解构
+let personName = person.name, 
+ personAge = person.age; 
+console.log(personName); // Matt 
+console.log(personAge); // 27 
+// 使用对象解构
+let person = { 
+ name: 'Matt', 
+ age: 27 
+}; 
+let { name: personName, age: personAge } = person; 
+console.log(personName); // Matt 
+console.log(personAge); // 27 
+
+let personName, personAge; 
+let person = { 
+ name: 'Matt', 
+ age: 27 
+}; 
+({name: personName, age: personAge} = person); 
+console.log(personName, personAge); // Matt, 27 
+```
+### 8.2 创建对象
+#### 8.2.1 概述
+
+#### 8.2.2 工厂模式
+工厂模式虽然可以解决创建多个类似对象的问题，但没有解决对象标识问题（即新创建的对象是什么类型）。
+```javascript
+function createPerson(name, age, job) { 
+ let o = new Object(); 
+ o.name = name; 
+ o.age = age; 
+ o.job = job; 
+ o.sayName = function() { 
+ console.log(this.name); 
+ }; 
+ return o; 
+} 
+let person1 = createPerson("Nicholas", 29, "Software Engineer"); 
+let person2 = createPerson("Greg", 27, "Doctor");
+```
+#### 8.2.3 构造函数模式
+构造函数名称的首字母都是要大写的。
+调用构造函数会执行以下操作：
+（1）在内存中创造一个新对象
+（2）这个新对象的内部[[Prototype]]特性被赋值为构造函数的prototype属性
+（3）构造函数内部的this被赋值给这个新对象（this指向新对象）
+（4）执行构造函数的内部代码（给新对象添加属性）
+（5）如果构造函数返回非空对象，则返回该对象；否则，返回刚创建的新对象。
+```javascript
+function Person(name, age, job){ 
+ this.name = name; 
+ this.age = age; 
+ this.job = job; 
+ this.sayName = function() { 
+ console.log(this.name); 
+ }; 
+} 
+let person1 = new Person("Nicholas", 29, "Software Engineer"); 
+let person2 = new Person("Greg", 27, "Doctor"); 
+person1.sayName(); // Nicholas 
+person2.sayName(); // Greg 
+
+console.log(person1.constructor == Person); true
+console.log(person2.constructor == Person); true 
+console.log(person1 instanceof Object); // true 
+console.log(person1 instanceof Person); // true 
+console.log(person2 instanceof Object); // true 
+console.log(person2 instanceof Person); // true 
+
+```
+1. 构造函数也是函数：任何函数只要使用了new操作符调用就是构造函数
+2. 在调用一个函数而没有明确设置 this 值的情况下（即没有作为对象的方法调用，或者没有使用 call()/apply()调用），this 始终指向 Global 对象（在浏览器中就是 window 对象）
+3. 特定对象指定为作用域。这里的调用将对象 o 指定为 Person()内部的 this 值，因此执行完函数代码后，所有属性和 sayName()方法都会添加到对象 o 上面。
+```javascript
+// 在另一个对象的作用域中调用
+let o = new Object(); 
+Person.call(o, "Kristen", 25, "Nurse"); 
+o.sayName(); // "Kristen"
+```
+4. 构造函数的问题：定义的方法会在每个实例上都创建一遍。
+
+#### 8.2.4 原型模式
+每个函数都会创建一个 prototype 属性，这个属性是一个对象，包含应该由特定引用类型的实例共享的属性和方法。
+```javascript
+function Person() {} 
+Person.prototype.name = "Nicholas"; 
+Person.prototype.age = 29; 
+Person.prototype.job = "Software Engineer"; 
+Person.prototype.sayName = function() { 
+ console.log(this.name); 
+}; 
+let person1 = new Person(); 
+person1.sayName(); // "Nicholas" 
+let person2 = new Person(); 
+person2.sayName(); // "Nicholas" 
+console.log(person1.sayName == person2.sayName); // true
+```
+1. 理解原型
+*实例与构造函数原型之间有直接的联系，但实例与构造函数之间没有*
+```javascript
+function Person() {}
+let person = new Person()
+// person和Peason之间没有直接联系，person和Person.prototype之间才有联系
+// person._proto_ === Person.prototype
+// Person.prototype.constructor === Person
+// person1.__proto__.constructor === Person
+
+```
+![image.png]
++ Object.getPrototypeOf()
++ Object.isPrototypeOf()
++ Object.setPrototypeOf()
+2. 原型层级
+hasOwnProperty()方法用于确定某个属性是在实例上还是在原型对象上。这个方法是继承自 Object的，会在属性存在于调用它的对象实例上时返回 true
+
+3. 原型和in操作符
++ in : 
+   - 在单独使用时，in 操作符会在可以通过对象访问指定属性时返回 true，无论该属性是在实例上还是在原型上
+   - for...in: 可以通过对象访问且可以被枚举的属性都会返回，包括实例属性和原型属性。(要获得对象上所有可枚举的实例属性，可以使用 Object.keys()方法。)
+4. 枚举属性的性质
+
+```javascript
+
+```
+
 
 
 
