@@ -674,6 +674,128 @@ hasOwnProperty()方法用于确定某个属性是在实例上还是在原型对�
    - 在单独使用时，in 操作符会在可以通过对象访问指定属性时返回 true，无论该属性是在实例上还是在原型上
    - for...in: 可以通过对象访问且可以被枚举的属性都会返回，包括实例属性和原型属性。(要获得对象上所有可枚举的实例属性，可以使用 Object.keys()方法。)
 4. 枚举属性的性质
+不确定顺序枚举：for...in、Object.keys()
+确定顺序枚举：Object.getOwnPropertyNames(),Object.getOwnPropertySymbols(),Object.assign()
+```javascript
+// 先以升序枚举数值键，然后以插入顺序枚举字符串和符号键
+let k1 = Symbol('k1'), 
+ k2 = Symbol('k2'); 
+let o = { 
+ 1: 1, 
+ first: 'first', 
+ [k1]: 'sym2', 
+ second: 'second', 
+ 0: 0 
+}; 
+o[k2] = 'sym2'; 
+o[3] = 3; 
+o.third = 'third'; 
+o[2] = 2; 
+console.log(Object.getOwnPropertyNames(o)); 
+// ["0", "1", "2", "3", "first", "second", "third"] 
+console.log(Object.getOwnPropertySymbols(o)); 
+// [Symbol(k1), Symbol(k2)]
+
+```
+#### 8.2.5 对象迭代
++ Object.values()返回对象值的数组
++ Object.entries()返回键/值对的数组
+执行对象的浅复制
+*原型的问题*
+它弱化了向构造函数传递初始化参数的能力，会导致所有实例默认都取得相同的属性值。原型的最主要问题源自它的共
+享特性。原型上的所有属性是在实例间共享的，这对函数来说比较合适。另外包含原始值的属性也还好，如前面例子中所示，可以通过在实例上添加同名属性来简单地遮蔽原型上的属性。真正的问题来自包含引用值的属性。这就是实际开发中通常不单独使用原型模式的原因
+```javascript
+function Person() {} 
+Person.prototype = { 
+ constructor: Person, 
+ name: "Nicholas", 
+ age: 29, 
+ job: "Software Engineer", 
+ friends: ["Shelby", "Court"],
+  sayName() { 
+ console.log(this.name); 
+ } 
+}; 
+let person1 = new Person(); 
+let person2 = new Person(); 
+person1.friends.push("Van"); 
+console.log(person1.friends); // "Shelby,Court,Van" 
+console.log(person2.friends); // "Shelby,Court,Van" 
+console.log(person1.friends === person2.friends); // true  
+```
+### 8.3 继承
+#### 8.3.1 原型链
+定义：每个构造函数都有一个原型对象，原型有一个属性指回构造函数，而实例有一个内部指针指向原型。如果原型是另一个类型的实例呢？那就意味着这个原型本身有一个内部指针指向另一个原型，相应地另一个原型也有一个指针指向另一个构造函数。这样就在实例和原型之间构造了一条原型链。这就是原型链的基本构想
+```javascript
+function SuperType() { 
+ this.property = true; 
+} 
+SuperType.prototype.getSuperValue = function() { 
+ return this.property; 
+}; 
+function SubType() { 
+ this.subproperty = false; 
+} 
+// 继承 SuperType 
+SubType.prototype = new SuperType(); 
+SubType.prototype.getSubValue = function () { 
+return this.subproperty; 
+}; 
+let instance = new SubType(); 
+console.log(instance.getSuperValue()); // true 
+```
+1. 默认原型
+默认情况下，所有引用类型都继承自 Object，这也是通过原型链实现的。任何函数的默认原型都是一个 Object 的实例，这意味着这个实例有一个内部指针指向Object.prototype。
+2. 原型与继承的关系
+3. 关于方法
+4. 原型链的问题： 原型中包含的引用值会在所有实例间共享；子类型在实例化时不能给父类型的构造函数传参
+
+#### 8.3.2 盗用构造函数
+定于： 在子类构造函数中调用父类构造函数。
+问题：必须在构造函数中定义方法，因此函数不能重用。
+
+```javascript
+function SuperType() { 
+ this.colors = ["red", "blue", "green"]; 
+} 
+function SubType() { 
+ // 继承 SuperType 
+ SuperType.call(this); 
+}
+```
+#### 8.3.3 组合继承
+定义：使用原型链继承原型上的属性和方法，而通过盗用构造函数继承实例属性。
+```javascript
+function SuperType(name){ 
+ this.name = name; 
+ this.colors = ["red", "blue", "green"]; 
+} 
+SuperType.prototype.sayName = function() { 
+ console.log(this.name); 
+}; 
+function SubType(name, age){ 
+ // 继承属性
+ SuperType.call(this, name); 
+ this.age = age; 
+} 
+// 继承方法
+SubType.prototype = new SuperType(); 
+SubType.prototype.sayAge = function() { 
+ console.log(this.age); 
+}; 
+let instance1 = new SubType("Nicholas", 29); 
+instance1.colors.push("black"); 
+console.log(instance1.colors); // "red,blue,green,black" 
+instance1.sayName(); // "Nicholas"; 
+instance1.sayAge(); // 29 
+let instance2 = new SubType("Greg", 27); 
+console.log(instance2.colors); // "red,blue,green" 
+instance2.sayName(); // "Greg"; 
+instance2.sayAge(); // 27 
+```
+#### 8.3.4 原型链继承
+#### 8.3.5 寄生式继承
+### 8.4 类
 
 ```javascript
 
