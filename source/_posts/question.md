@@ -34,6 +34,8 @@ undefined ?? 1 false
 + useState会触发页面的重新渲染
 + 对于不一定返回的数据，一定要先判断，再渲染
 + 使用了keepAlive切换页面不更新，可以用umi带的useActivate钩子；同一路由，用state带参数，不会刷新页面
++ 数组，对象等结构，如果层次较深，react组件 set操作不会更新，需要浅拷贝
++ set操作会使组件重新渲染
 #### Ant Design
 + 问题：展示表格有一列字数非常多，需要超出一行省略，鼠标移动元素上时，显示全部文字，column使用属性ellipsis无效
 + 解决： 由于antdesign table如果有列使用属性fixed，则ellipsis不生效 ，给需要的列添加类
@@ -69,6 +71,9 @@ validator: async (_, value) => {
 
 #### Http
 + 不要将https和http写死 ： //127.0.0.1:8080
++ 关于http请求：
+  - axios：是基于XMLHttpRequest封装的接口，支持浏览器和node
+  - fetch: 是浏览器支持的原生接口，在node环境下需要安装相应的包
 #### 浏览器
 + Q：接口一直请求不到菜单列的新的数据
 + A: 一直渲染的是缓存数据，需要清楚浏览器的缓存，查看请求的资源的时间
@@ -85,3 +90,7 @@ validator: async (_, value) => {
 #### git
 + stash 
 + 
+
+#### 算法
+1. 排序算法
+![排序](https://www.runoob.com/wp-content/uploads/2019/03/0B319B38-B70E-4118-B897-74EFA7E368F9.png)
