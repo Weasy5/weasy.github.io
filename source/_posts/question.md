@@ -74,6 +74,7 @@ validator: async (_, value) => {
 + 关于http请求：
   - axios：是基于XMLHttpRequest封装的接口，支持浏览器和node
   - fetch: 是浏览器支持的原生接口，在node环境下需要安装相应的包
++ 启用本地服务器 host不能为localhost，否则不能使用ip访问，需要设置为0.0.0.0
 #### 浏览器
 + Q：接口一直请求不到菜单列的新的数据
 + A: 一直渲染的是缓存数据，需要清楚浏览器的缓存，查看请求的资源的时间

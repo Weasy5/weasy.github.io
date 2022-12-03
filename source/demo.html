@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>test</h1>
+  <img src="" alt="">
+  <div id = 'container1'></div>
+</body>
+<script>
+  function getBase64(imgUrl) {
+    window.URL = window.URL || window.webkitURL;
+    var xhr = new XMLHttpRequest();
+    xhr.open("get", imgUrl, true);
+    // 至关重要
+    xhr.responseType = "blob";
+    xhr.onload = function () {
+      if (this.status == 200) {
+        //得到一个blob对象
+        var blob = this.response;
+        console.log("blob", blob)
+        // 至关重要
+        let oFileReader = new FileReader();
+        oFileReader.onloadend = function (e) {
+          // 此处拿到的已经是 base64的图片了
+          let base64 = e.target.result;
+          console.log("方式一》》》》》》》》》", base64)
+          var img = document.createElement("img");
+
+          img.src = base64
+          document.getElementById("container1").appendChild(img);
+          // document.getElementsByTagName('img').src = base64
+        };
+        oFileReader.readAsDataURL(blob);
+      }
+    }
+    xhr.send();
+  }
+  // function getBase64Image(img, width, height) {
+  //     var canvas = document.createElement("canvas");
+  //     canvas.width = width ? width : img.width;
+  //     canvas.height = height ? height : img.height;
+  //     var ctx = canvas.getContext("2d");
+  //     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  //     var dataURL = canvas.toDataURL();
+  //     return dataURL;
+  //   }
+  function getBase64Image(imgUrl) {  
+    const img = new Image()
+    img.height = 400
+    img.width = 400
+    img.src = imgUrl
+    img.crossOrigin = '';
+    var canvas = document.createElement("canvas");  
+    canvas.width = img.width || 400;  
+    canvas.height = img.height || 400;  
+    var ctx = canvas.getContext("2d");  
+    ctx.drawImage(img, 0, 0, img.width, img.height);  
+    var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();  
+    var dataURL = canvas.toDataURL("image/"+ext); 
+    var img1 = document.createElement("img");
+    img1.src = dataURL
+    document.getElementById("container1").appendChild(img1); 
+    return dataURL;  
+  } 
+  getBase64('https://img1.baidu.com/it/u=3009731526,373851691&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500')
+  console.log('getBase64Image',getBase64Image('https://img1.baidu.com/it/u=3009731526,373851691&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500'))
+</script>
+</html>

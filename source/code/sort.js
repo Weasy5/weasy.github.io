@@ -58,17 +58,77 @@ const insertSort = (arr) => {
 /* 
 归并排序：
 */
+// 快速排序：不稳定算法，平均为nlogn 最坏是n^2 
+function partition(arr, low, high) {
+  let pivot = arr[low];
+  while (low < high) {
+    while (low < high && arr[high] > pivot) {
+      --high;
+    }
+    arr[low] = arr[high];
+    while (low < high && arr[low] <= pivot) {
+      ++low;
+    }
+    arr[high] = arr[low];
+  }
+  arr[low] = pivot;
+  return low;
+}
+
+function quickSort(arr, low, high) {
+  if (low < high) {
+    let pivot = partition(arr, low, high);
+    quickSort(arr, low, pivot - 1);
+    quickSort(arr, pivot + 1, high);
+  }
+  return arr;
+}
+
+
 /* 
 防抖函数
 */
 const myDebounce = (func, wait) => {
-  let timer
+  let timer = null
   return () => {
     if(timer){
       clearTimeout()
     }
     timer = setTimeout(() => {
-      func.apply(this)
+      func.apply(this, arguments)
+      timer = null
     }, wait)
+  }
+}
+
+/* 
+节流函数
+*/
+const myThrottle = (func, wait) => {
+  let timer = null
+  return () => {
+    if(timer) return
+    timer = setTimeout(() => {
+      func.apply(this, arguments)
+      clearTimeout(timer)
+    }, wait)
+  }
+}
+
+// 手写bind函数
+Function.prototype.myBind = function (context) {
+  // 判断调用对象是否为函数
+  if (typeof this !== "function") {
+      throw new TypeError("Error");
+  }
+
+  // 获取参数
+  const args = [...arguments].slice(1),
+        fn = this;
+
+  return function Fn() {
+
+      // 根据调用方式，传入不同绑定值
+      return fn.apply(this instanceof Fn ? new fn(...arguments) : context, args.concat(...arguments)); 
   }
 }
