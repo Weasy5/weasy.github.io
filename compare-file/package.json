@@ -1,0 +1,14 @@
+{
+  "name": "compare-file",
+  "version": "1.0.0",
+  "description": "compare-file",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

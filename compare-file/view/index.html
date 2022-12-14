@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- import element-ui CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- import Vue before Element -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- import element-ui JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>dependencies</h1>
+    <el-table
+      :data="sourceData.data"
+      style="width: 100%">
+      <el-table-column
+        prop="name"
+        label="name"
+        key="name"
+        width="100"
+        >
+      </el-table-column>
+      <el-table-column
+        v-for="v in sourceData.columns"
+        width="200"
+        :prop="v"
+        :label="v"
+        :key="v"
+        >
+      </el-table-column>
+    </el-table>
+    <h1>devDependencies</h1>
+    <el-table
+      :data="sourceData.devData"
+      style="width: 100%">
+      <el-table-column
+        prop="name"
+        label="name"
+        key="name"
+        width="100"
+        >
+      </el-table-column>
+      <el-table-column
+        v-for="v in sourceData.devColumns"
+        width="200"
+        :prop="v"
+        :label="v"
+        :key="v"
+        >
+      </el-table-column>
+    </el-table>
+  </div>
+</body>
+<script>
+  new Vue({
+        // 控制的标签容器
+        el: '#app',
+        // 交互的数据
+        data: function () {
+            return {sourceData: {}}
+        },
+        mounted() {
+          fetch('http://127.0.0.1:8999/data').then((response) => response.json()).then(data => {
+            this.sourceData = data
+          })
+        },
+        // 方法
+        methods: {
+            
+        }
+    })
+
+  
+</script>
+</html>
