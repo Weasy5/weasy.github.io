@@ -1,0 +1,38 @@
+{
+  "name": "rebate",
+  "version": "0.1.0",
+  "private": true,
+  "projectName": "协议返利",
+  "scripts": {
+    "dev": "vue-cli-service serve --open --mode dev",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build-test": "vue-cli-service build --mode test",
+    "build-stg": "vue-cli-service build --mode stg",
+    "build-prod": "vue-cli-service build --mode prod"
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "axios": "^0.21.1",
+    "core-js": "^2.6.5",
+    "img-vuer": "^0.19.1",
+    "mint-ui": "^2.2.13",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.1.1",
+    "@vue/cli-service": "^4.5.13",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "style-resources-loader": "^1.2.1",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

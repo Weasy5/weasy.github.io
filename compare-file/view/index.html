@@ -14,8 +14,11 @@
 </head>
 <body>
   <div id="app">
+    <!-- <el-button @click="() => tableToExcel()">导出</button> -->
+
     <h1>dependencies</h1>
     <el-table
+      ref="table1Ref"
       :data="sourceData.data"
       style="width: 100%">
       <el-table-column
@@ -54,6 +57,14 @@
         >
       </el-table-column>
     </el-table>
+    <el-row>
+      <el-col
+      v-for="v in sourceData.devColumns"
+        :key="v"
+      >
+      {{v}}
+      </el-col>
+    </el-row>
   </div>
 </body>
 <script>
@@ -71,7 +82,52 @@
         },
         // 方法
         methods: {
+          tableToExcel() {
+            console.log(this.$refs.table1Ref.$el)
+          },
+          // tableToExcel(jsonData, head, worksheet){
+          //     //要导出的json数据
+              
+          //     //列标题
+          //     let head = '';
+          //     // `<tr><td>姓名</td><td>电话</td><td>邮箱</td></tr>`
+          //     for(let key of head){
+          //       head+=`<td>${key}</td>`
+          //     }
+          //     head = `<tr>${head}</tr>`
+          //     let tbody="";//内容
+          //     for (let item of jsonData) {
+                
+          //       tbody+=
+          //       `<tr>
+          //           <td>${jsonData[item].name + '\t'}</td>
+          //           <td>${jsonData[item].phone + '\t'}</td>
+          //           <td>${jsonData[item].email + '\t'}</td>
+          //       </tr>`
+          //     }
+          //     let str = head+tbody;//头部跟身体内容连接
             
+            
+          //     //Worksheet名
+          //     // let worksheet = 'Sheet1'
+          //     let uri = 'data:application/vnd.ms-excel;base64,';
+          
+          //     //下载的表格模板数据
+          //     let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+          //     xmlns:x="urn:schemas-microsoft-com:office:excel" 
+          //     xmlns="http://www.w3.org/TR/REC-html40">
+          //     <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+          //       <x:Name>${worksheet}</x:Name>
+          //       <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+          //       </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+          //       </head><body><table>${str}</table></body></html>`;
+          //     //下载模板
+          //     window.location.href = uri + base64(template)
+          // }
+          //输出base64编码
+          base64 (s) { 
+            return window.btoa(unescape(encodeURIComponent(s))) 
+          }
         }
     })
 
