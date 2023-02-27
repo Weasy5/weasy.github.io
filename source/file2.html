@@ -1,0 +1,128 @@
+
+<!--
+ * @Author: zhongmi
+ * @Date: 2022-04-21 14:57:58
+ * @LastEditTime: 2022-04-25 15:58:46
+ * @Description: file content
+-->
+{% extends 'plat_index.html' %}
+
+{% block style %}
+<style type="text/css">
+    .card {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .card-header {
+        background-color: CornflowerBlue;
+        color:white
+    }
+    #toolbar{
+        line-height: 4;
+        border-top: 10px solid #e5e5e5;
+    }
+    /* .dialog-bg {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.4);
+    }
+<!--    .button{-->
+<!--		text-align: right;-->
+<!--		border: none;-->
+<!--	}-->
+    .dialog-bg .img-box {
+        width: 1440px;
+        height: 960px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -582px;
+        margin-top: -340px;
+    }
+    .dialog-bg .img-box img {
+        width: 100%;
+        height: 100%;
+    } */
+</style>
+{% endblock %}
+
+{% block body %}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+    <p class="text-secondary text-left">{{ variable1 }}</p>
+    <div class="card mb-12 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">图片上传</h4>
+<!--            <div class="alert alert-info" role="alert" id="alert_ans">{{ variable1 }}</div>-->
+        </div>
+<!--        <form action="/alg/plat/captcha_recognition" method="post" enctype="multipart/form-data">-->
+<!--        <div class="card-body">-->
+<!--            <input type="file" name="pic"  id="picID" accept="image/gif,image/jpeg,image/x-png" multiple="multiple" @change="getFile">-->
+<!--            <script type="text/javascript"> getFile(e){ e.target.files && e.target.files.forEach((item,index)=>{ this.fileList.push(item); }</script>-->
+
+
+        <form action="./file.html" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div id="file-inputs">
+                        <input type="file" name="pic" id = "picID" accept="image/gif,image/jpeg,image/x-png" multiple="multiple">
+                    </div>
+                    <br>
+                    <div style="text-align: left;">
+                        <button type="submit" class="btn btn-primary"  >上传</button>
+                    </div>
+                </div>
+
+        </form>
+
+
+
+
+
+
+<!--            <br>-->
+<!--            </br>-->
+
+<!--                <div style="text-align: left;">-->
+<!--                    <button type="submit" class="btn btn-primary"  >上传</button>-->
+<!--                </div>-->
+
+<!--        </div>-->
+<!--        </form>-->
+<!--    </div>-->
+
+
+<!-- 显示图片
+<div class="dialog-bg" id="dialog-bg">
+    <div class="img-box" id="img-box">
+        <img src="" ><img/>
+    </div>
+</div> -->
+{% endblock %}
+
+{% block js%}
+<script>
+
+     window.onload = function(){
+        let fileInputCount = 0;
+        function handleFileInput() {
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.name = 'pic';
+          fileInput.id = 'picID';
+          fileInput.multiple = true;
+          document.getElementById('file-inputs').appendChild(fileInput);
+          fileInput.addEventListener("change", handleFileInput);
+        }
+        document.getElementById("picID").addEventListener("change", handleFileInput);
+      }
+
+
+
+
+
+</script>
+{% endblock %}

@@ -7,9 +7,7 @@ const bubbleSort = (arr) => {
   for(let i=0;i<len-1;i++){
     for(let j=0;j<len-1;j++){
       if(arr[j] > arr[j+1]){
-        const temp = arr[j]
-        arr[j] = arr[j+1]
-        arr[j+1] = temp
+        [arr[j], arr[j+1]] = [arr[j+1],arr[j]]
       }
     }
   }
@@ -22,17 +20,14 @@ const bubbleSort = (arr) => {
 */
 const selectSort = (arr) => {
   const len = arr.length
-  let temp=0
   for(let i=0;i<len-1;i++){
     let minIndex = i
     for(let j=i+1;j<len;j++){
-      if(min > arr[j]){
+      if(arr[minIndex] > arr[j]){
         minIndex = j
       }
     }
-    temp = arr[minIndex]
-    arr[minIndex] = arr[i]
-    arr[i] = temp
+    [arr[minIndex], arr[i]] = [arr[i], arr[minIndex]]
   }
   return arr
 }
@@ -92,7 +87,7 @@ const myDebounce = (func, wait) => {
   let timer = null
   return () => {
     if(timer){
-      clearTimeout()
+      clearTimeout(timer)
     }
     timer = setTimeout(() => {
       func.apply(this, arguments)

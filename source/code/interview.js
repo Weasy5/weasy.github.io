@@ -113,8 +113,8 @@ pubSub.notified(TYPE_C)
     constructor(executor){
       this.status = PENDIND
       this.data = undefined // 成功或失败的值
-      this.onResolvedCallbacks = [] // resolved和reject的回调函数
-      this.onRejectCallbacks = [] // resolved和reject的回调函数
+      this.onResolvedCallbacks = [] // resolved的回调函数
+      this.onRejectCallbacks = [] // reject的回调函数
 
       const resolve = (value) => {
         if(this.status === PENDIND){
@@ -151,4 +151,57 @@ pubSub.notified(TYPE_C)
     }
   }
 
+})(window)
+
+// Promise
+
+(function(window){
+  // 三个状态
+  const PENDIND = 'pengding'
+  const FULFILLED = 'fulfilled'
+  const REJECTED = 'rejected'
+  class MyPromise {
+    constructor(executor){
+      this.status = PENDIND
+      this.data = undefined
+      this.onResolvedCallBacks = []
+      this.onRejectedCallBacks = []
+      const resolved=(val) => {
+        this.status = FULFILLED
+        this.data = val
+        this.onResolvedCallBacks.forEach(fn => fn())
+      }
+      const rejected=(val) => {
+        this.status = REJECTED
+        this.data = val
+        this.onRejectedCallBacks.forEach(fn => fn())
+      }
+      try{
+        executor(resolved, rejected)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    then(onFulfilled, onRejected){
+      if(this.status === FULFILLED){
+        onFulfilled(this.data)
+      }
+      if(this.status === REJECTED){
+        onRejected(this.data)
+      }
+      if (this.status === PENDING) {
+        // 如果promise的状态是 pending，需要将 onFulfilled 和 onRejected 函数存放起来，等待状态确定后，再依次将对应的函数执行
+        this.onResolvedCallbacks.push(() => {
+          onFulfilled(this.value)
+        });
+  
+        // 如果promise的状态是 pending，需要将 onFulfilled 和 onRejected 函数存放起来，等待状态确定后，再依次将对应的函数执行
+        this.onRejectedCallbacks.push(()=> {
+          onRejected(this.reason);
+        })
+      }
+  
+    }
+    
+  }
 })(window)
