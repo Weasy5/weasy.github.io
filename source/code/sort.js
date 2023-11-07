@@ -127,3 +127,41 @@ Function.prototype.myBind = function (context) {
       return fn.apply(this instanceof Fn ? new fn(...arguments) : context, args.concat(...arguments)); 
   }
 }
+
+function numberOfShelves( N ) {
+  // write code here
+  // 将等腰三角形填充为一个正方形
+  let matrix = new Array(N).fill([]).map(() => new Array(N).fill(0))
+  // 循环方向
+  let dir = 0,row=0,col=-1
+  let count = 0 //循环的圈数，每遍历一圈，row和col的数值-1
+  const len = (N*N - N)/2 + N
+  console.log(matrix, len)
+  for(let i=1;i<=len;i++){
+      switch (dir){
+          // 向下
+          case 0:
+              row++
+              if(row === N - count -1) dir++
+              break
+          // 右上角
+          case 1:
+              col++
+              row--
+              if(row === count +1 && col == N -count -1) dir++
+              break
+          // 向左
+          case 2:
+              col--
+              if(col == count){
+                  dir=0
+                  count++
+              }
+              break
+      }
+      matrix[row][col] = i
+  }
+  console.log(matrix)
+  return matrix.flat(1).filter(i => i !== 0)
+}
+numberOfShelves(3)

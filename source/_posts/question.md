@@ -6,15 +6,29 @@
 + map不能跳出循环
 + some ：return true 跳出循环
 
-+ 判断为undefined 或者null  ，0的时候：?? 用于判断第一个数据是否为null或undefined,
++ 判断为undefined 或者null 的时候：?? 用于判断第一个数据是否为null或undefined,
 ```javascript
-undefined || null || 0 // false
-null ?? 1 // false
-undefined ?? 1 false
-​0 ?? 1 // true
-0 || 1 false
+undefined || null || 0 // 0
+null ?? 1 // 1
+undefined ?? 1 // 1
+​0 ?? 1 // 0
+0 || 1  //1
 ```
 + valueEnum  object结构不能用数字做key
++ 路由back()不会刷新页面，如果需要刷新
+```javascript
+var isPageHide = false;
+window.addEventListener('pageshow', function () {
+    console.log('pageshow')
+    if (isPageHide) {
+        window.location.reload();
+    }
+});
+window.addEventListener('pagehide', function () {
+    console.log('pagehide')
+    isPageHide = true;
+}); 
+```
 
 
 #### CSS
