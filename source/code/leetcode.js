@@ -265,13 +265,67 @@ const mergeList = (l1, l2) => {
 
 /**
  * 9. 寻找重复数
- * 双指针/二分
+ * 双指针/二分/快慢指针
  * @param {number[]} nums
  * @return {number}
  */
 var findDuplicate = function(nums) {
-  const n = nums.length
-  const sum = nums.reduce((pre, cur) => pre+cur, 0)
-  const originsum = (n * (n + 1)) / 2
-  return sum - originsum
+  let slow = 0,fast = 0
+  do{
+    slow = nums[slow]
+    fast = nums[nums[fast]]
+  }while(slow != fast)
+  slow = 0
+  while(slow != fast){
+    slow = nums[slow]
+    fast = nums[fast]
+  }
+  return slow
+};
+
+/**
+ * 10.课程表
+ * dfs/bfs
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish = function(numCourses, prerequisites) {
+  // [[3, 0], [3, 1], [4, 1], [4, 2], [5, 3], [5, 4]] 6
+  const inDegree = new Array(numCourses).fill(0) // 
+    const map = new Map()
+    for(let i =0;i<prerequisites.length;i++){
+        const cur = prerequisites[i]
+        inDegree[cur[0]]++ // 课的初始入度值
+        if(map.has(cur[1])){
+            map.set(cur[1], [...map.get(cur[1]), cur[0]])
+        }else{
+            map.set(cur[1], [cur[0]])
+        }
+    }
+    // [0,0,0,2,2,2]
+    // {0:[3],1:[3,4],2:[4],3:[5],4:[5]}
+    const queue = []
+    // 所有入度为0的课入列，即不依赖任何课的课
+    for(let i=0;i<inDegree.length;i++){
+        if(inDegree[i] === 0){
+            queue.push(i)
+        }
+    }
+    let count = 0
+    // queue: [0,1,2]
+    while(queue.length){ 
+        const selected = queue.shift() // 当前选的课出列 0/1
+        count++
+        const toEnQuene = map.get(selected) // 当前课的后续课 : [3]/[3,4]
+        if(toEnQuene && toEnQuene.length){
+            for(let i = 0;i<toEnQuene.length;i++){
+                inDegree[toEnQuene[i]]--  // 依赖该课的入度-1 inDegree[3]:2-1=1/
+                if(inDegree[toEnQuene[i]] == 0){
+                    queue.push(toEnQuene[i]) // [2,3]
+                }
+            }
+        }
+    }
+    return count === numCourses
 };
