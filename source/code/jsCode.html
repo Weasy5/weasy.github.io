@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /* 数据类型判断 */
+    function myTypeOf(val){
+      if(typeof val !== 'object'){
+        return typeof val
+      }
+      return Object.prototype.toString.call(val).slice(8, -1).toLowerCase()
+    }
+    console.log(myTypeOf({}))
+    //原型链继承
+    function Animal(){
+      this.animals = [1,2,3]
+    }
+    const isObject = (target) => (typeof target === "object" || typeof target === "function") && target !== null;
+
+function deepClone(target, map = new WeakMap()) {
+    if( typeof target !== 'object') {
+      return target
+    }
+    // 循环引用问题
+    if(map.has(target)){
+      return target
+    }
+    if(target instanceof Date){
+      return new Date(target)
+    }
+    if(target instanceof RegExp){
+      return new RegExp(target)
+    }
+    const cloneObj = Array.isArray(target) ? [] : {}
+    map.set(target,true)
+    for(let prop in target){
+      if(target.hasOwnProperty(prop)){
+        cloneObj[prop] = typeof target[val] ==="object" ? deepClone(target[prop], map) : target[prop]
+      }
+    }
+    return cloneObj
+} 
+// 实现apply
+Function.prototype.myApply = (context, args) => {
+  context = context || window
+  context.fn = this
+  const result = context.fn(...args)
+  delete context.fn
+  return result
+}
+Function.prototype.bind = (context, args) => {
+  fn = this
+  return function(...innerArgs){
+    fn.apply(context, args.concat(innerArgs))
+  }
+}
+function MyNew(constructor, ...args){
+  const newObj = {}
+  newObj.__proto__ = constructor.prototype
+  const res = constructor.apply(obj, args)
+  return  typeof  res == "object" ? res : newObj
+}
+function myInstanceOf(left,right){
+  let proto = left.__proto__
+  while(true){
+    if(proto  === null) return false
+    if(proto === right.prototype) return true
+    proto = proto.__proto__
+  }
+}
+function promiseAll(arrs){
+  let results = []
+  return new Promise((resolve, reject) => {
+    arrs.forEach((p,i) => {
+      p().then((res) => {
+        results[i] =  res
+        if(results.length === arrs.length){
+          resolve(results)
+        }
+      },err => {
+          reject(err)
+      })
+    })
+  })
+}
+function lodashGet(target, path){
+  if( typeof target !=="object") return
+  let count = 0,len = path.length
+  while(target !== null && count < len){
+    target = target[path[count]]
+    count++
+  }
+  const res = count === len ? target : undefined
+  return res 
+}
+const object = { a: [{ b: { c: 3 } }] };
+
+// 给一个路径，透过 .get() 找到该路径的值，例如
+console.log(lodashGet(object, ["a", "0", "b", "c"]))
+ // 回传 3
+
+ // 函数缓存
+ function cached(fn){
+  let cache = new map()
+  return function(){
+    let key = JSON.stringify(arguments)
+    if(map.has(key)){
+      return map.get(key)
+    }else{
+      const val = fn(...arguments)
+      map.set(key, val)
+      return val
+    }
+  }
+ }
+ // 限制串行并限制请求数量
+ async function schedule(reqs, limitCount){
+  for(let i=0;i<limitCount;i++){
+    await reqs().finally(() => {
+
+    })
+
+  }
+  const runTask = async (req)=> {
+    await req().finally(() => {
+      reqs.length !== 0 && runTask(reqs.shift())
+    })
+  }
+ }
+ // 函数柯里化
+ function curried(fn){
+  return (...args) => {
+    if(args.length === fn.length){
+      return fn(...args)
+    }else{
+      return (...nextArgs) => {
+        curried.apply(this, args.concat(nextArgs))
+      }
+    }
+  }
+ }
+  </script>
+</body>
+</html>
