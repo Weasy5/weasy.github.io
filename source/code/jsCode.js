@@ -26,3 +26,10 @@ function myTypeOf(val){
   }
   return Object.prototype.toString.call(val).slice(8, -1).toLowerCase()
 }
+var cancellable = function(fn, args, t) {
+  fn(...args)
+  const timer = setInterval(() => {
+    fn(...args)
+  },t)
+  return () => clearInterval(timer)
+};
